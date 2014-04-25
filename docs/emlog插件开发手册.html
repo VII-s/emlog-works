@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><script src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/ga.js" async="" type="text/javascript"></script><script charset="utf-8" src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/shares.php"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>emlog插件开发手册</title>
+<meta name="keywords" content="">
+<meta name="description" content="emlog插件开发手册（基于最新版本emlog 4.2）">
+<meta name="generator" content="emlog">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.emlog.net/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.emlog.net/wlwmanifest.xml">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.emlog.net/rss.php">
+<link href="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/main.css" rel="stylesheet" type="text/css">
+<link href="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/prettify.css" rel="stylesheet" type="text/css">
+<script src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/prettify.js" type="text/javascript"></script>
+<script src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/common_tpl.js" type="text/javascript"></script>
+<!--[if IE 6]>
+<script src="http://blog.emlog.net/content/templates/default/iefix.js" type="text/javascript"></script>
+<![endif]-->
+</head>
+<body><link type="text/css" rel="stylesheet" href="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/jiathis_counter.css"><script charset="utf-8" src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/jiathis.php"></script><link type="text/css" rel="stylesheet" href="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/jiathis_share.css"><iframe style="position: fixed; display: none; opacity: 0;" frameborder="0"></iframe><div style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto;" class="jiathis_style"></div><div style="position: absolute; z-index: 1000000000; display: none; overflow: auto;" class="jiathis_style"></div><iframe src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/jiathis_utility.html" style="display: none;" frameborder="0"></iframe>
+<div id="wrap">
+  <div id="header">
+    <h1><a href="http://blog.emlog.net/">点滴记忆</a></h1>
+    <h3>EMLOG官方博客</h3>
+  </div>
+    <div id="banner"><a href="http://blog.emlog.net/"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/top-1325775590.jpg" height="134" width="960"></a></div>
+    <div id="nav">	<ul class="bar">
+			<li class="item common">
+			<a href="http://blog.emlog.net/">首页</a>
+			
+            
+		</li>
+			<li class="item common">
+			<a href="http://bbs.emlog.net/">论坛</a>
+			
+            
+		</li>
+			<li class="item common">
+			<a href="http://www.emlog.net/">EM首页</a>
+			
+            
+		</li>
+			<li class="item common">
+			<a href="http://blog.emlog.net/admin">登录</a>
+			
+            
+		</li>
+		</ul>
+</div><div id="content">
+<div id="contentleft">
+	<h2>emlog插件开发手册</h2>
+	<p class="date">2011-5-8  <a href="http://blog.emlog.net/author/1">那多记忆</a> 	    <a href="http://blog.emlog.net/sort/emlog_doc">使用教程</a>
+	 </p>
+	<p></p>
+<p>emlog插件开发手册（基于最新版本emlog 4.2）</p>
+<p><a target="_blank" href="http://blog.emlog.net/content/uploadfile/201105/e1c84b995e750855d31d1a266e4bd5a120110508084240.jpg" id="ematt:350"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/thum-e1c84b995e750855d31d1a266e4bd5a120110508084240.jpg" alt="点击查看原图" border="0"></a></p>
+<p>emlog支持插件机制，这样使得开发者可以方便地向emlog中添加自己需要的功能。</p>
+<p>&nbsp;</p>
+<p><b><span style="font-size:14px;">一.插件实现原理</span></b></p>
+<p>在emlog整个运行过程中我们设定了一些动作事件，遇到这些事件时emlog会自动的调用插件绑定到该事件的上的所有插件函数，从而实现插件的功能。</p>
+<p>&nbsp;</p>
+<p><b><span style="font-size:14px;">二、插件挂载点</span></b></p>
+<p></p>
+<p><b><span class="Apple-style-span" style="font-weight:normal;"><b>挂载点</b></span>函数：doAction</b></p>
+<p>本函数内置于emlog核心代码中，就是传说中的插件挂载点。</p>
+<p>本函数有一个固定的参数：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;$hook，$hook是执行动作的名称</p>
+<p>&nbsp;&nbsp; &nbsp;其他的参数则可以在调用本函数时依次传入,函数会自动的发送给钩子函数</p>
+<p>例子:</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;doAction('save_log',$id);</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;这是emlog的添加日志事件,在添加日志后会触发,参数为新日志的$id号码.</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;那么系统会自动的将$id传入到每一个绑定到本事件的钩子函数中。</p>
+<p>&nbsp;</p>
+<p></p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;"><b>添加事件调用方法 函数: addAction</b></p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">本函数是插件用来想挂载点挂载方法的函数，写在插件文件中。</p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">函数有两个参数：$hook, $actionFunc。</p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">&nbsp;&nbsp;&nbsp;&nbsp;$hook 是绑定事件的名称,</p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">&nbsp;&nbsp;&nbsp;&nbsp;$actionFunc &nbsp;是绑定到该事件钩子上的函数名称</p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">例子:</p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;addAction('save_log','plugin_addlog');</p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;例子中将plugin_addlog函数绑定到系统的save_log事件中,只要系统执行到了save_log挂载点时,就会调用plugin_addlog函数.</p>
+<div><div><br>
+</div>
+<p><b>插件文件系统</b></p>
+<p>插件目录：/content/plugins/</p>
+<p>仅识别 “插件目录/插件名/插件名.php” 目录结构的插件。</p>
+<p>例如：emlog默认的tips插件,其文件夹名称为tips,程序文件名称为tips.php</p>
+<p>&nbsp;</p>
+<p></p>
+<p><b>插件的激活与关闭</b></p>
+<p>在emlog后台的插件管理中,点击每个插件后的状态按钮即可激活/关闭插件。</p>
+<p>自emlog4.0.0起增加激活和关闭插件函数，来完成激活和关闭时的一些初始化工作。</p>
+<p>如果插件需要，可以给插件增加 plugin_callback.php 文件，其中包含两个函数：</p>
+<p>callback_init()为插件激活时调用</p>
+<p>callback_rm()为插件关闭时调用</p>
+<p>&nbsp;</p>
+<p><b>插件前台显示页面</b></p>
+<p>如果想让插件在前台输出一个页面，可以在插件中定义一个 pluginname_show.php 的文件。</p>
+<p>此时插件的前台显示地址为：http://博客地址/?plugin=pluginname</p>
+<p>这样就可以在pluginname_show.php文件构建插件的页面显示。</p>
+<p>&nbsp;</p>
+<p><b>插件后台显示配置页面</b></p>
+<p>如果你想让插件在后台输出一个设置页面，可以在插件中定义一个 pluginname_setting.php 的文件</p>
+<p>此时插件的后台配置地址为：http://博客地址/admin/plugin.php?plugin=pluginname</p>
+<p>&nbsp;</p>
+<p></p>
+<p><b><span style="font-size:14px;">三.插件开发标准</span></b></p>
+<p><b>插件命名规则</b></p>
+<p><span class="Apple-tab-span" style="white-space:pre;">	</span>插件名只能以半角的字母、数字、下划线(_)、横杠(-) 组合而成，且只能以字母作为开头</p>
+<p><b>函数/变量命名标准</b></p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;插件的所有函数/变量采用 "插件名_" 作为前缀来命名</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;例如:</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;$emlogplugin_var</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;emlogplugin_dosomething()</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;采用这样的命名方式可以避免于其他插件的函数或者变量出现冲突.</p>
+<p><b>插件文件名称</b></p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;插件主文件名称必须与插件所在文件夹名称相同</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;设定插件参数的配置程序文件名称必须为 “插件名称_setting.php”</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;(注:该文件为可选,如果你的插件需要用户配置参数才需要该文件来完成配置功能)</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;例如:</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;emlogplugin/</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;emlogplugin.php</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;emlogplugin_setting.php</p>
+<p><b>安全性</b></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在插件文件开头增加限制语句</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;插件函数文件需要增加:</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;!defined('EMLOG_ROOT') &amp;&amp; exit('access deined!');</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;如果不增加该语句,那么直接访问插件的程序文件php会爆出博客的物理路径,对博客的安全造成威胁。</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;如果你的插件需要接收一些参数,请务必严格过滤每一个变量的数据.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;例如：获取外部获取一个int型的参
+数，$id = $_GET['id']; 这样写是不安全的，要改为：$id = intval($_GET['id']);&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果是一个字符型的参数，$action = $_GET['action']; 这样写也是不安全的，</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要改为：$action = addslashes($_GET['action']);</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;更多安全方面的内容可以参考一下这篇文章《PHP 安全指南》</p>
+<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;http://www.hhacker.com/files/200709/1/index.html</p>
+<p><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>前台链接使用绝对地址&nbsp;</p>
+<p>&nbsp;</p>
+<p><b><span style="font-size:16px;">四、当前插件挂载点及说明：</span></b></p>
+<p><b><span style="font-size:16px;"><br>
+</span></b></p>
+<p></p>
+<p>1、挂载点：doAction('adm_main_top')<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+所在文件：admin/views/header.php<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+描述：后台红线区域扩展：&nbsp;</p>
+<p><a target="_blank" href="http://blog.emlog.net/content/uploadfile/201105/4a7a9004c068615d2de5c30d0da635b520110508075527.jpg" id="ematt:347"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/thum-4a7a9004c068615d2de5c30d0da635b520110508075527.jpg" alt="点击查看原图" border="0"></a></p>
+<p>&nbsp;</p>
+<p>2、挂载点：doAction('adm_head')<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+所在文件：admin/views/header.php<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+描述：后台头部扩展：可以用于增加后台css样式、加载js等</p>
+<p>&nbsp;</p>
+<p>3、挂载点：doAction('adm_siderbar_ext')<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+所在文件：admin/views/header.php<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+描述：后台侧边栏 功能扩展 子菜单扩展，用于插件单独页面。</p>
+<p><a target="_blank" href="http://blog.emlog.net/content/uploadfile/201105/4a7a9004c068615d2de5c30d0da635b520110508081321.jpg" id="ematt:349"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/4a7a9004c068615d2de5c30d0da635b520110508081321.jpg" alt="点击查看原图" border="0"></a></p>
+<p>&nbsp;</p>
+<p>4、挂载点：doAction('save_log', $blogid)<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+所在文件：admin/save_log.php<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+描述：新增日志、修改日志扩展点</p>
+<p>&nbsp;</p>
+<p>5、挂载点：doAction('del_log', $key)<br>
+所在文件：admin/admin_log.php<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+描述：删除日志操作扩展点&nbsp;</p>
+<p>&nbsp;</p>
+<p>6、挂载点：doAction('adm_writelog_head', $key)<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+所在文件：</p>
+<p>a<span class="Apple-tab-span" style="white-space:pre;">dmin/add_log.php</span>a<span class="Apple-tab-span" style="white-space:pre;">dmin/add_page.php</span>a<span class="Apple-tab-span" style="white-space:pre;">dmin/edit_log.php</span><br>
+a<span class="Apple-tab-span" style="white-space:pre;">dmin/edit_page.php</span><span class="Apple-tab-span" style="white-space:pre;">	</span></p>
+描述：可以再红框处显示扩展内容，如插入网络相册照片的插件。<p></p>
+<p><a target="_blank" href="http://blog.emlog.net/content/uploadfile/201105/4a7a9004c068615d2de5c30d0da635b520110508080742.jpg" id="ematt:348"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/4a7a9004c068615d2de5c30d0da635b520110508080742.jpg" alt="点击查看原图" border="0"></a>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>7、挂载点：doAction('comment_post')	</p>
+<p>
+所在文件：./index.php		<br>
+描述：发表评论扩展点（写入评论前）。可用于垃圾评论防范&nbsp;</p>
+<p>&nbsp;</p>
+<p>8、挂载点：doAction('comment_saved’)	</p>
+<p>
+所在文件：include/model/comment_model.php	<br>
+描述：发表评论扩展点（写入评论后）。用于发布评论成功的后续操作，如发通知邮件</p>
+<p>&nbsp;</p>
+<p>9、挂载点：doAction('log_related',$logData)	<br>
+所在文件：content/templates/default/echo_log.php<br>
+描述：阅读日志页面扩展点、用于增加日志相关内容&nbsp;</p>
+<p>&nbsp;</p>
+<p>10、挂载点：doAction('navbar', '&lt;li&gt;', '&lt;/li&gt;')	<br>
+所在文件：content/templates/default/header.php<br>
+描述：用于扩展导航条。例如相册插件会利用这个挂载点生成一个相册的导航链接</p>
+<p>&nbsp;</p>
+<p>11、挂载点：doAction('index_head')	<br>
+所在文件：Content/templates/default/header.php<br>
+描述：前台头部扩展：可以用于增加前台css样式、加载js等</p>
+<p>&nbsp;</p>
+<p>12、挂载点：doAction('index_footer')	<br>
+所在文件：content/templates/default/footer.php<br>
+描述：首页底部扩展点&nbsp;</p>
+<p>&nbsp;</p>
+<p></p>
+<p>13、挂载点：doAction('comment_reply', $commentId, $reply)</p>
+<p>所在文件：admin/comment.php</p>
+<p>描述：回复评论扩展点</p>
+<p>&nbsp;</p>
+<p>14、挂载点：doAction('data_prebakup')<br>
+所在文件：admin/data.php<br>
+描述：扩展备份数据库页面，可以对插件增加的表进行备份</p>
+<p>&nbsp;</p>
+<p>15、挂载点：doAction('rss_display')<br>
+所在文件：rss.php<br>
+描述：Rss输出扩展</p>
+<p>&nbsp;</p>
+<p>16、挂载点：doAction('attach_upload')<br>
+所在文件：include/lib/function.base.php<br>
+描述：扩展附件上传，如增加图片水印效果等</p>
+<p>&nbsp;</p>
+<p>17、挂载点：doAction('url_rewrite')<br>
+所在文件：include/lib/function.base.php<br>
+描述：扩展url重写，可以自定义其他url优化方案</p>
+<p>&nbsp;</p>
+<p>18、挂载点：doAction('adm_comment_display')<br>
+所在文件：admin/views/comment.php<br>
+后台评论显示扩展，可以用于查询评论人ip所在地域</p>
+<p>&nbsp;</p>
+<p>19、挂载点：doAction('index_loglist_top')<br>
+所在文件：content/templates/default/log_list.php</p>
+<p>描述：日志列表顶部扩展点，如显示公告等</p>
+<p>&nbsp;</p>
+<p>20、挂载点：doAction('diff_side')<br>
+所在文件：content/templates/default/side.php<br>
+描述：侧边栏控制扩展点</p>
+<p>&nbsp;</p>
+<p>21、挂载点：doAction('reply_twitter', $r, $name, $date, $tid)<br>
+所在文件：t/index.php<br>
+描述：回复碎语扩展点，用于回复邮件提醒等</p>
+<p>&nbsp;</p>
+<p>22、挂载点：doAction('post_twitter', $t)<br>
+所在文件：<br>
+/m/index.php<br>
+/admin/twitter.php<br>
+描述：发布碎语扩展点，用于碎语和其他微博类产品同步等</p>
+<p>&nbsp;</p>
+<p>23、挂载点：doAction('adm_footer')<br>
+所在文件：admin/views/footer.php<span class="Apple-tab-span" style="white-space:pre;">	</span><br>
+描述：后台底部扩展：可以用于增加后台js等</p>
+<p></p>
+<p></p>
+<p style="margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;"></p>
+</div>
+<p></p>
+<p></p>
+<p></p>	<p class="tag"></p>
+	
+	<!-- JiaThis Button BEGIN -->
+	<div id="ckepop">
+		<span class="jiathis_txt">分享到：</span>
+		<a title="分享到新浪微博" class="jiathis_button_tsina"><span class="jiathis_txt jiathis_separator jtico jtico_tsina">新浪微博</span></a>
+		<a title="分享到腾讯微博" class="jiathis_button_tqq"><span class="jiathis_txt jiathis_separator jtico jtico_tqq">腾讯微博</span></a>
+		<a title="分享到人人网" class="jiathis_button_renren"><span class="jiathis_txt jiathis_separator jtico jtico_renren">人人网</span></a>
+		<a href="http://www.jiathis.com/share?uid=1588758" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+		<a class="jiathis_counter_style"><span title="累计分享5次" id="jiathis_counter_17" class="jiathis_button_expanded jiathis_counter jiathis_bubble_style">5</span></a>
+	</div>
+	<script type="text/javascript">var jiathis_config = {data_track_clickback:true};</script>
+	<script type="text/javascript" src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/jia.js" charset="utf-8"></script><script type="text/javascript" src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/plugin.js" charset="utf-8"></script><div style="position:absolute;width:0px;height:0px;"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="JIATHISSWF" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" height="0" width="0"><param name="allowScriptAccess" value="always"><param name="swLiveConnect" value="true"><param name="movie" value="http://www.jiathis.com/code/swf/m.swf"><param name="FlashVars" value="z=a"><embed name="JIATHISSWF" src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/m.swf" flashvars="z=a" allowscriptaccess="always" swliveconnect="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" height="0" width="0"></object></div>
+	<br>
+	<!-- JiaThis Button END -->
+	<div id="related_log" style="font-size:12px"><p><b>相关日志：</b></p><p><a href="http://blog.emlog.net/?post=573">留言本速成教程</a></p><p><a href="http://blog.emlog.net/?post=576">侧栏评论宽度调整让你的博客更美观!</a></p><p><a href="http://blog.emlog.net/?post=572">Windows Live Writer 离线发布工具</a></p><p><a href="http://blog.emlog.net/?post=578">EM相册插件安装使用和常见问题</a></p><p><a href="http://blog.emlog.net/?post=592">emlog安装教程</a></p></div>	<div class="nextlog">		« <a href="http://blog.emlog.net/post-595.html">emlog模板结构介绍</a>
+				|
+				 <a href="http://blog.emlog.net/post-592.html">emlog安装教程</a>»
+	</div>
+		<a name="comments"></a>
+	<p class="comment-header"><b>评论：</b></p>
+			<div class="comment" id="comment-3675">
+		<a name="3675"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/fbc0a08cb21db10c2513a4326515dcea.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://www.howtotechtips.com/" target="_blank">HowToTechTips</a> </b><br><span class="comment-time">2012-07-08 20:23</span>
+			<div class="comment-content">我是浙大的留学生 doAction('save_log',$id);&nbsp;&nbsp;有一点不懂的 看了你写的后 一点点 懂了</div>
+			<div class="comment-reply"><a href="#comment-3675" onclick="commentReply(3675,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3673">
+		<a name="3673"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/b3cde35c189b4e16dd4f91000e73ef44.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://www.brightsun.co.uk/Asia/Philippines/Manila/cheap-flights-to-manila." target="_blank">flights to Manila</a> </b><br><span class="comment-time">2012-07-04 18:29</span>
+			<div class="comment-content">我期待同你的好工作以及最近。其实你的创作能力，启发了我，开始我自己的博客。</div>
+			<div class="comment-reply"><a href="#comment-3673" onclick="commentReply(3673,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3618">
+		<a name="3618"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/2e9fe67ad651d34fc05bfbddec01bc38.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://web-promotion-services.net/web-promotion-seo-manual-free.html" target="_blank">网站发起人</a> </b><br><span class="comment-time">2012-05-30 02:57</span>
+			<div class="comment-content">Hahah，撞向我的筆記本電腦，當我瀏覽 blog.emlog.net 我在這裡的最後一次。在過去 2個月，我一直在尋找這個網志，所以感謝我再次找到它！ ：D</div>
+			<div class="comment-reply"><a href="#comment-3618" onclick="commentReply(3618,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3617">
+		<a name="3617"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/2e9fe67ad651d34fc05bfbddec01bc38.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://web-promotion-services.net/web-promotion-seo-manual-free.html" target="_blank">seo tools</a> </b><br><span class="comment-time">2012-05-29 19:20</span>
+			<div class="comment-content">我很羨慕你的能力上blog.emlog.net 發表的精彩文章，只是想這樣說我！</div>
+			<div class="comment-reply"><a href="#comment-3617" onclick="commentReply(3617,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3615">
+		<a name="3615"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/fe06c495a7c425eb1641bc62f39016d1.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://allanabolics.org/" target="_blank">mass cycle</a> </b><br><span class="comment-time">2012-05-18 16:29</span>
+			<div class="comment-content">高興了解blog.emlog.net 。上述物品是相當了不起的，我真的很喜歡讀您的博客，你表示點。我真的很喜歡出現在一個典型的基礎上，後內的話題很多。感謝分享... ...繼續寫！！</div>
+			<div class="comment-reply"><a href="#comment-3615" onclick="commentReply(3615,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3614">
+		<a name="3614"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/084e685e303f24bdb1a704e43beb3207.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://web-promotion-services.net/" target="_blank">seo optimization</a> </b><br><span class="comment-time">2012-05-18 09:22</span>
+			<div class="comment-content">相當不錯的職位。我只是偶然blog.emlog.net 和想說的話，我真正喜歡瀏覽您的博客文章。畢竟我將訂閱您的RSS提要，我希望你寫的再快！</div>
+			<div class="comment-reply"><a href="#comment-3614" onclick="commentReply(3614,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3584">
+		<a name="3584"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/d41d8cd98f00b204e9800998ecf8427e.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://www.dygod.tv/" target="_blank">tshk</a> </b><br><span class="comment-time">2012-03-26 09:54</span>
+			<div class="comment-content">插件开发好像挺简单的,支持一下</div>
+			<div class="comment-reply"><a href="#comment-3584" onclick="commentReply(3584,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3487">
+		<a name="3487"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/7157882786b58a8640412eeaf4c4bcf2.png"></div>		<div class="comment-info">
+			<b><a href="http://www.90tao.com/" target="_blank">90淘</a> </b><br><span class="comment-time">2012-01-18 12:10</span>
+			<div class="comment-content">感谢编写插件的大牛！</div>
+			<div class="comment-reply"><a href="#comment-3487" onclick="commentReply(3487,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3436">
+		<a name="3436"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/d41d8cd98f00b204e9800998ecf8427e.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://df.com/" target="_blank">DFD</a> </b><br><span class="comment-time">2011-12-10 21:06</span>
+			<div class="comment-content">决定认真学习学习，O(∩_∩)O谢谢</div>
+			<div class="comment-reply"><a href="#comment-3436" onclick="commentReply(3436,this)">回复</a></div>
+		</div>
+			</div>
+		<div class="comment" id="comment-3378">
+		<a name="3378"></a>
+		<div class="avatar"><img src="emlog%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C_files/de7358961776933dbfb21279a2900cfa.jpeg"></div>		<div class="comment-info">
+			<b><a href="http://yuangu.tk/" target="_blank">元谷</a> </b><br><span class="comment-time">2011-11-08 09:59</span>
+			<div class="comment-content">希望增加评论、碎语、日志等删除接口！可以做一个归档功能的插件！</div>
+			<div class="comment-reply"><a href="#comment-3378" onclick="commentReply(3378,this)">回复</a></div>
+		</div>
+			</div>
+	    <div id="pagenavi">
+	     <span>1</span>  <a href="http://blog.emlog.net/post-593.html/comment-page-2#comments">2</a>     </div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://blog.emlog.net/sort/emlog_doc">使用教程(7)</a>
+			</li><li>
+	<a href="http://blog.emlog.net/sort/emlog_dev">开发历程(72)</a>
+			</li><li>
+	<a href="http://blog.emlog.net/sort/emlog_faq">常见问题(4)</a>
+			</li><li>
+	<a href="http://blog.emlog.net/sort/emlog_info">功能介绍(1)</a>
+			</li></ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://blog.emlog.net/post-640.html">emlog5.3.0发布</a></li>
+		<li><a href="http://blog.emlog.net/post-639.html">emlog5.2.1发布</a></li>
+		<li><a href="http://blog.emlog.net/post-638.html">emlog5.2.0发布</a></li>
+		<li><a href="http://blog.emlog.net/post-636.html">emlog5.1.2发布</a></li>
+		<li><a href="http://blog.emlog.net/post-635.html">emlog5.1.1发布</a></li>
+		<li><a href="http://blog.emlog.net/post-634.html">emlog5.1.0发布</a></li>
+		<li><a href="http://blog.emlog.net/post-633.html">emlog5.0.1发布</a></li>
+		<li><a href="http://blog.emlog.net/post-627.html">emlog5.0.0发布</a></li>
+		<li><a href="http://blog.emlog.net/post-625.html">emlog4.2.1发布</a></li>
+		<li><a href="http://blog.emlog.net/post-620.html">emlog4.2.0发布</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://blog.emlog.net/record/201404">2014年4月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201312">2013年12月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201311">2013年11月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201306">2013年6月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201305">2013年5月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/201212">2012年12月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201209">2012年9月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201203">2012年3月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/201112">2011年12月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201109">2011年9月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201108">2011年8月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201105">2011年5月(6)</a></li>
+		<li><a href="http://blog.emlog.net/record/201104">2011年4月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201103">2011年3月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201012">2010年12月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201009">2010年9月(3)</a></li>
+		<li><a href="http://blog.emlog.net/record/201008">2010年8月(7)</a></li>
+		<li><a href="http://blog.emlog.net/record/201007">2010年7月(3)</a></li>
+		<li><a href="http://blog.emlog.net/record/201006">2010年6月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201005">2010年5月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201004">2010年4月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/201003">2010年3月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200912">2009年12月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200911">2009年11月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200910">2009年10月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200909">2009年9月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200908">2009年8月(3)</a></li>
+		<li><a href="http://blog.emlog.net/record/200906">2009年6月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200905">2009年5月(3)</a></li>
+		<li><a href="http://blog.emlog.net/record/200904">2009年4月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200903">2009年3月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200902">2009年2月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200901">2009年1月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200812">2008年12月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200809">2008年9月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200808">2008年8月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200807">2008年7月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200806">2008年6月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200803">2008年3月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200801">2008年1月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200712">2007年12月(3)</a></li>
+		<li><a href="http://blog.emlog.net/record/200711">2007年11月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200709">2007年9月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200706">2007年6月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200611">2006年11月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200610">2006年10月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200609">2006年9月(5)</a></li>
+		<li><a href="http://blog.emlog.net/record/200608">2006年8月(2)</a></li>
+		<li><a href="http://blog.emlog.net/record/200605">2006年5月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200512">2005年12月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200510">2005年10月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200508">2005年8月(1)</a></li>
+		<li><a href="http://blog.emlog.net/record/200507">2005年7月(4)</a></li>
+		<li><a href="http://blog.emlog.net/record/200506">2005年6月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://blog.emlog.net/index.php">
+	<input name="keyword" class="search" type="text">
+	</form>
+	</ul>
+	</li>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Powered by <a href="http://www.emlog.net/" title="采用emlog系统">emlog</a> 
+	<a href="http://www.miibeian.gov.cn/" target="_blank"></a> <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-414935-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>	</div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+</body></html>
