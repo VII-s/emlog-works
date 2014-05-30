@@ -21,8 +21,8 @@ function advancemarkdown_savelog($id){
     $logData['content'] = $Parsedown->text($logData['content']);
     $logData['content'] = str_replace('<pre><code>', '<pre class="brush:php; toolbar:true; auto-links: true;">', $logData['content']);
     $logData['content'] = str_replace('<code>', '<pre class="brush:php; toolbar:true; auto-links: true;">', $logData['content']);
-    $logData['content'] = str_replace('</code></pre>', '</pre>">', $logData['content']);
-    $logData['content'] = str_replace('</code>', '</pre>">', $logData['content']);
+    $logData['content'] = str_replace('</code></pre>', '</pre>', $logData['content']);
+    $logData['content'] = str_replace('</code>', '</pre>', $logData['content']);
     $Log_Model->updateLog($logData, $id);
 }
 

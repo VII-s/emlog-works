@@ -1,13 +1,12 @@
 <?php
 /*
 Plugin Name: 代码高亮插件
-Version: 2.0
-Plugin URL: http://www.btboys.com/post-97.html
-Description: 在博文中插入代码。技术博客必备。采用syntaxHighlighter插件，支持绝大部分编程语言。
-Author: GodSon
-Author Email: wmails@126.com
-ForEmlog:5.1.0
-Author URL: http://www.jeasyuicn.com
+Version: 1.1
+Description: 修改自GodSon的高亮插件，美化代码展现。在博文中插入代码。技术博客必备。采用syntaxHighlighter插件，支持绝大部分编程语言。
+Author: Mike
+Author Email: mikecoder.cn@gmail.com
+ForEmlog:5.3.0
+Author URL: http://www.mikecoder.net
 */
 !defined('EMLOG_ROOT') && exit('access deined!');
 

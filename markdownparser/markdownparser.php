@@ -24,7 +24,6 @@ function markdownparse($id){
 
 function markdownparse_showstatus(){
     echo "<br>当前MarkDown Parser已经启用，如果需要进行MarkDown编写，请注意选择HTML源码编辑模式。";
-    echo "<br>具体的使用方法，可以参考<a href=\"http://mikecoder.net\">文档</a>。";
 }
 
 addAction('save_log', 'markdownparse');
