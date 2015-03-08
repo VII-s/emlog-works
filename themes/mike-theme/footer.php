@@ -12,7 +12,8 @@ if(!defined('EMLOG_ROOT')) {exit('error!');}
 </footer>
 
 </div>
-<script type='text/javascript' src='<?php echo TEMPALTE_URL; ?>js/skip-link-focus-fix.js?ver=20141010'></script>
+<script src='<?php echo TEMPALTE_URL; ?>js/skip-link-focus-fix.js?ver=20141010' type='text/javascript'></script>
+<script src="<?php echo TEMPALTE_URL; ?>js/comment-reply.min.js?ver=4.1.1" type="text/javascript">
 <script type='text/javascript'>
 /* <![CDATA[ */
 var screenReaderText = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};

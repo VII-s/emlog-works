@@ -23,13 +23,26 @@ foreach($logs as $value):
     <footer class="entry-footer">
         <span class="posted-on">
             <span class="screen-reader-text">Posted on </span>
-                <a rel="bookmark" href="<?php echo $value['log_url']; ?>">
-                    <time class="entry-date published updated"><?php echo @strftime("%A %d %b" , $value['date']); ?></time>
-                </a>
+            <a rel="bookmark" href="<?php echo $value['log_url']; ?>">
+                <time class="entry-date published updated"><?php echo @strftime("%A %d %b" , $value['date']); ?></time>
+            </a>
+        </span>
+        <span class="comments-link">
+            <a title="Comments on <?php echo $value['comnum']?>" href="<?php echo $value['log_url']."#comments"; ?>"><?php echo $value['comnum']?> Comments</a>
+        </span>
+        <span class="byline">
+            <span class="author vcard">
+               <span class="screen-reader-text">Author </span>
+               <a class="url fn n" href="<?php echo BLOG_URL;?>?author=<?php echo ($value['author']);?>"><?php blog_author($value['author']);?></a>
             </span>
-            <span class="comments-link">
-                <a title="Comments on <?php echo $value['comnum']?>">Leave a Comment</a>
-            </span>
+        </span>
+        <span class="cat-links">
+            <span class="screen-reader-text">Categories </span>
+            <?php blog_sort($value['gid']); ?>
+        </span>
+        <span class="tags-links">
+            <span class="screen-reader-text">Tags </span>
+            <?php blog_tag($value['gid']); ?>
         </span>
     </footer>
 </article>
