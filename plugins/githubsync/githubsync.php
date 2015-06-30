@@ -32,7 +32,8 @@ function githubsync_savelog($id){
 }
 
 function githubsync_editurl() {
-    echo 'haha';
+    echo '<script type="text/javascript" src="'.BLOG_URL.'content/plugins/githubsync/js/check.js"></script>';
+    echo '<a id="githubdoc" href="javascript:getGithubDocByUrl();" class="thickbox">填写GITHUB连接后点这:</a>&nbsp<input id="githuburl" style="width:600px"></input><br>';
 }
 addAction('adm_writelog_head', 'githubsync_editurl');
 
