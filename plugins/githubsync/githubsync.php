@@ -16,10 +16,9 @@ function githubsync(){
 
 function githubsync_editurl() {
     echo '<script type="text/javascript" src="'.BLOG_URL.'content/plugins/githubsync/js/check.js"></script>';
-    echo '&nbsp&nbsp<a id="githubdoc" href="javascript:getGithubDocByUrl();" class="thickbox">填写GITHUB URL后点这:</a>&nbsp<input id="githuburl" style="width:550px"></input><br>';
+    echo '<br>&nbsp<a id="githubdoc" href="javascript:getGithubDocByUrl();" class="thickbox">填写GITHUB URL后点这:</a>&nbsp<input id="githuburl" style="width:550px"></input><br>';
 }
 addAction('adm_writelog_head', 'githubsync_editurl');
-
 
 function githubsync_headcss(){
 echo '<link rel="stylesheet" type="text/css" href ="'.BLOG_URL.'content/plugins/githubsync/lib/code/shCore.css" /><link rel="stylesheet" type="text/css" href ="'.BLOG_URL.'content/plugins/githubsync/lib/code/shThemeRDark.css" />';

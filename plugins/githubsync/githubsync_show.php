@@ -24,17 +24,16 @@ $CONTENT = preg_replace($IMAGE_URL_OLD, $IMAGE_URL_NEW, $CONTENT);
 $LINK_URL_OLD = '/a href=(.*?blob)\//';
 $LINK_URL_NEW = 'a href="https://raw.githubusercontent.com/'.$DOC_INFO[1].'/'.$DOC_INFO[2].'/';
 $CONTENT = preg_replace($LINK_URL_OLD, $LINK_URL_NEW, $CONTENT);
-if (strstr($CONTENT, $CODE_URL_OLD)) {
-    $CODE_URL_OLD = '/<pre><code>/';
-    $CODE_URL_NEW = '<pre class="brush:php; toolbar:true; auto-links: true">';
-    $CONTENT = preg_replace($CODE_URL_OLD, $CODE_URL_NEW, $CONTENT);
-    $CODE_URL_OLD = '/<\/pre><\/code>/';
-    $CODE_URL_NEW = '</pre">';
-    $CONTENT = preg_replace($CODE_URL_OLD, $CODE_URL_NEW, $CONTENT);
-}
+
+$CODE_URL_OLD = '/<pre>[\s\S]*?<code>/';
+$CODE_URL_NEW = '<pre class="brush:php; toolbar:true; auto-links: true">';
+$CONTENT = preg_replace($CODE_URL_OLD, $CODE_URL_NEW, $CONTENT);
+$CODE_URL_OLD = '/<\/pre><\/code>/';
+$CODE_URL_NEW = '</pre">';
+$CONTENT = preg_replace($CODE_URL_OLD, $CODE_URL_NEW, $CONTENT);
 
 $CONTENT = $CONTENT.'<END>';
-$DOC_TITLE_REGEX = '/<h2[\s\S]*?a>([\s\S]*?)<\/h2>([\s\S]*)<END>/';
+$DOC_TITLE_REGEX = '/<h\d[\s\S]*?a>([\s\S]*?)<\/h\d>([\s\S]*)<END>/';
 preg_match($DOC_TITLE_REGEX, $CONTENT, $DOC_INFO);
 array_shift($DOC_INFO);
 
