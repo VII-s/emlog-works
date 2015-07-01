@@ -80,16 +80,46 @@ function getOkGet(){
     if (xmlHttp.readyState == 4 && xmlHttp.status==200){
         try {
             var docinfo = eval(xmlHttp.responseText);
-            document.getElementById('title').value = docinfo[0];
-            KindEditor.appendHtml('#content', docinfo[1]);
-            alert(docinfo[0]);
+            document.getElementById('title').value = UrlDecode(docinfo[0]);
+            KindEditor.appendHtml('#content', UrlDecode(docinfo[1]));
+            alert(UrlDecode(docinfo[0]) + "已经同步完成");
             isSend = false;
             document.getElementById('githubdoc').text = '已完成！享受吧少年!';
             document.getElementById('githubdoc').disabled = false;
         } catch (e) {
+            console.log(e.toString());
             getError();
         }
     }
+}
+function UrlDecode(zipStr){
+    var uzipStr="";
+    for(var i=0; i < zipStr.length; i++){
+        var chr = zipStr.charAt(i);
+        if(chr == "+"){
+            uzipStr += " ";
+        } else if (chr == "%") {
+            var asc = zipStr.substring(i+1,i+3);
+            if(parseInt("0x"+asc) > 0x7f) {
+                uzipStr += decodeURI("%"+asc.toString()+zipStr.substring(i+3,i+9).toString());
+                i += 8;
+            } else {
+                uzipStr += AsciiToString(parseInt("0x"+asc));
+                i += 2;
+            }
+        } else {
+            uzipStr+= chr;
+        }
+    }
+
+    return uzipStr;
+}
+
+function StringToAscii(str) {
+    return str.charCodeAt(0).toString(16);
+}
+function AsciiToString(asccode) {
+    return String.fromCharCode(asccode);
 }
 
 

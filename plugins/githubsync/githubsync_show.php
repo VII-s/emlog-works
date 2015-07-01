@@ -33,9 +33,16 @@ $CODE_URL_NEW = '</pre">';
 $CONTENT = preg_replace($CODE_URL_OLD, $CODE_URL_NEW, $CONTENT);
 
 $CONTENT = $CONTENT.'<END>';
-$DOC_TITLE_REGEX = '/<h\d[\s\S]*?a>([\s\S]*?)<\/h\d>([\s\S]*)<END>/';
+$DOC_TITLE_REGEX = '/<h\d+[\s\S]*?a>([\s\S]*?)<\/h\d+>([\s\S]*)<END>/';
 preg_match($DOC_TITLE_REGEX, $CONTENT, $DOC_INFO);
 array_shift($DOC_INFO);
 
-echo json_encode($DOC_INFO, JSON_UNESCAPED_UNICODE);
+if ($DOC_INFO) {
+    $DOC_INFO[0] = urlencode($DOC_INFO[0]);
+    $DOC_INFO[1] = urlencode($DOC_INFO[1]);
+} else {
+    $DOC_INFO[] = urlencode("NO CONTENT");
+    $DOC_INFO[] = urlencode("检查你的markdown规范，要求第一行必须是标题，用===标示");
+}
+echo (json_encode($DOC_INFO));
 die();
