@@ -62,7 +62,7 @@ function getLabelsGet(URL){
         return;
     }
     isSend = true;
-    var url = "/emlog?plugin=githubsync&github-url=" + URL;
+    var url = "/?plugin=githubsync&github-url=" + URL;
     xmlHttp.open("GET", url, true);
     xmlHttp.onreadystatechange = getOkGet;//发送事件后，收到信息了调用函数
     xmlHttp.onError = getError;
