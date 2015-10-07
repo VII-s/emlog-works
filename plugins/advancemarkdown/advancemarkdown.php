@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Advance Markdown Parser
-Version: 2.0
+Version: 2.1
 Plugin URL: http://mikecoder.net
 Description: Markdown!
 Author: Mike
