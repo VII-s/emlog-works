@@ -7,7 +7,7 @@ Description: Markdown!
 Author: Mike
 Author Email: mikecoder13@gmail.com
 Author URL: http://mikecoder.net
-*/
+ */
 !defined('EMLOG_ROOT') && exit('access deined!');
 function advancemarkdown(){
     $active_plugins = Option::get('active_plugins');
@@ -21,7 +21,6 @@ function advancemarkdown_savelog($id){
     $logData['content'] = $Parsedown->text($logData['content']);
     $Log_Model->updateLog($logData, $id);
 }
-
 addAction('save_log', 'advancemarkdown_savelog');
 
 function advancemarkdown_headcss(){
