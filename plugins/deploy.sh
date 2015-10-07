@@ -1,5 +1,5 @@
 DEPLOY=~/Workspace/php-code/emlog/content/plugins
-SOURCE=~/Workspace/fun-code/emlog-works/plugins
+SOURCE=~/Workspace/php-code/emlog-works/plugins
 
 PLUGIN_NAME=$1
 
