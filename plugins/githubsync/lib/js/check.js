@@ -80,8 +80,8 @@ function getOkGet(){
     if (xmlHttp.readyState == 4 && xmlHttp.status==200){
         try {
             var docinfo = eval(xmlHttp.responseText);
-            document.getElementById('title').value = UrlDecode(docinfo[0]);
-            KindEditor.appendHtml('#content', UrlDecode(docinfo[1]));
+            document.getElementById('title').value = docinfo[0];
+            KindEditor.appendHtml('#content', docinfo[1]);
             alert(UrlDecode(docinfo[0]) + "已经同步完成");
             isSend = false;
             document.getElementById('githubdoc').text = '已完成！享受吧少年!';
