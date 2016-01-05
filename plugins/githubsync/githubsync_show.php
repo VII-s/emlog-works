@@ -1,6 +1,24 @@
 <?php
 !defined('EMLOG_ROOT') && exit('access deined!');
 
+function dd($value) {
+    d($value);
+    die(0);
+}
+function d($value) {
+    if(is_array($value)) {
+        header("Content-type: application/json");
+        echo json_encode($value, JSON_UNESCAPED_UNICODE);
+    } else {
+        echo '<pre>';var_dump($value);echo '</pre>';
+    }
+}
+function json_return($value) {
+    header("Content-type: application/json");
+    echo json_encode($value, JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 $URL = base64_decode($_GET['github-url']);
 
 if (!strstr($URL, 'github')) {
