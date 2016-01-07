@@ -12,7 +12,7 @@
 !defined('EMLOG_ROOT') && exit('access deined!');
 
 function pluginseditor() {//写入插件导航
-    echo '<div class="sidebarsubmenu" id="themeseditor"><a href="./plugin.php?plugin=pluginseditor">主题编辑</a></div>';
+    echo '<div class="sidebarsubmenu" id="themeseditor"><a href="./plugin.php?plugin=pluginseditor">插件编辑</a></div>';
 }
 
 addAction('adm_sidebar_ext', 'pluginseditor');
