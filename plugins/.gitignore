@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### *.iml template
-plugins/plugins
+
 
 ### .git template
 
@@ -164,5 +164,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-#Mac OS
-.DS_Store

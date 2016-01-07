@@ -10,7 +10,7 @@ function plugin_setting_view() {
 	$themeseditor_theme_list = getPluginsList();
     $themeseditor_theme_files = getPluginsFileList($themeName);
 
-	if(isset($_GET['themeFileName']) && isset($_GET['themeName'])){
+    if(isset($_GET['themeFileName']) && isset($_GET['themeName'])){
 		$themeFileName = $_GET['themeFileName'];
 	}elseif(isset($_GET['themeName'])){
 		$themeFileName =$themeseditor_theme_files[0];
