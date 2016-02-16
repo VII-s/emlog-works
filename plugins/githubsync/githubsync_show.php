@@ -1,20 +1,4 @@
 <?php
-
-function getPageContent($url, $timeout = 60){
-    if (!function_exists('curl_init')) {
-        throw new Exception('server not install curl');
-    }
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-    $data = curl_exec($ch);
-    @curl_close($ch);
-    return $data;
-}
-
 function dd($value) {
     d($value);
     die(0);
@@ -33,6 +17,21 @@ function json_return($value) {
     exit();
 }
 
+function getPageContent($url, $timeout = 60){
+    if (!function_exists('curl_init')) {
+        throw new Exception('server not install curl');
+    }
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    $data = curl_exec($ch);
+    @curl_close($ch);
+    return $data;
+}
+
 $URL = base64_decode($_GET['github-url']);
 
 if (!strstr($URL, 'github')) {
@@ -45,9 +44,11 @@ preg_match('/github.com\/(.*?)\/(.*?)\//', $URL, $DOC_INFO);
 // URL_REAL : raw.githububusercontent.com/MikeCoder/MyStudy$url = "http://www.php100.com/logo.gif";
 $CONTENT = getPageContent($URL);
 
-$CONTENT = strstr($CONTENT, '"mainContentOfPage">');
-$CONTENT = substr($CONTENT, strlen('"mainContentOfPage">'));
-$CONTENT = str_replace(strstr($CONTENT, '</article'), '', $CONTENT);
+preg_match('/<article[\s|\S]+?>([\s|\S]+)<\/article>/', $CONTENT, $RES);
+if ($RES) {
+    $CONTENT = $RES[1];
+}
+
 $CONTENT = str_replace('\n', '',$CONTENT);
 $CONTENT = str_replace('\r\n', '',$CONTENT);
 
