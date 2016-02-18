@@ -52,6 +52,10 @@ if ($RES) {
 $CONTENT = str_replace('\n', '',$CONTENT);
 $CONTENT = str_replace('\r\n', '',$CONTENT);
 
+$ANCHOR_OLD = '/<a id="user-content-.*?"[\s|\S]+?class="anchor" href="[\s|\S]+?<\/a>/';
+$ANCHOR_NEW = '';
+$CONTENT = preg_replace($ANCHOR_OLD, $ANCHOR_NEW, $CONTENT);
+
 $IMAGE_URL_OLD = '/img src=(.*?raw)\//';
 $IMAGE_URL_NEW = 'img src="https://raw.githubusercontent.com/'.$DOC_INFO[1].'/'.$DOC_INFO[2].'/';
 $CONTENT = preg_replace($IMAGE_URL_OLD, $IMAGE_URL_NEW, $CONTENT);
@@ -60,7 +64,7 @@ $LINK_URL_NEW = 'a href="https://raw.githubusercontent.com/'.$DOC_INFO[1].'/'.$D
 $CONTENT = preg_replace($LINK_URL_OLD, $LINK_URL_NEW, $CONTENT);
 $CONTENT = $CONTENT.'<END>';
 
-$DOC_TITLE_REGEX = '/<h\d+[\s\S]+?a>([\s\S]*?)<\/h\d+>([\s\S]+)<END>/';
+$DOC_TITLE_REGEX = '/<h\d+>([\s\S]*?)<\/h\d+>([\s\S]+)<END>/';
 preg_match($DOC_TITLE_REGEX, $CONTENT, $DOC_INFO);
 array_shift($DOC_INFO);
 
